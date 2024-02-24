@@ -7,6 +7,15 @@ if (RequireTokens == nil) and (Balances ~= nil) then
     RequireTokens = true
 end
 
+function RegisterRoom(router) 
+    ao.send({
+        Target = router,
+        Action = "Register",
+        Address = ao.id,
+        Name = Name
+    })
+end
+
 function DispatchMessage(to, from, data, type)
     ao.send({
         Target = to,

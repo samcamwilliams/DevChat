@@ -1,15 +1,7 @@
 DevChat = {}
 
-DevChat.Colors = {
-    red = "\27[31m",
-    green = "\27[32m",
-    blue = "\27[34m",
-    reset = "\27[0m",
-    gray = "\27[90m"
-}
-
-DevChat.Router = "xnkv_QpWqICyt8NpVMbfsUQciZ4wlm5DigLrfXRm8fY"
-DevChat.InitRoom = "isImEFj7zii8ALzRirQ2nqUUXecCkdFSh10xB_hbBJ0"
+DevChat.Router = "8MGp9kOU4JYxAlPT1AyL7O3cedd97y-w8X4ciBsf_Xo"
+DevChat.InitRoom = "6I1JBBc9SOMtqFxlX7OoYgsMh7QeZk2fFwUCHTUqshg"
 DevChat.LastSend = DevChat.LastSend or DevChat.InitRoom
 
 DevChat.LastReceive = {
@@ -17,7 +9,7 @@ DevChat.LastReceive = {
     Sender = nil
 }
 
-DevChat.InitRooms = { [DevChat.InitRoom] = "DevChat-Main" }
+DevChat.InitRooms = { [DevChat.InitRoom] = "Getting-Started" }
 DevChat.Rooms = DevChat.Rooms or DevChat.InitRooms
 
 DevChat.Confirmations = DevChat.Confirmations or true
@@ -46,7 +38,7 @@ DevChat.add =
 List =
     function()
         ao.send({ Target = DevChat.Router, Action = "Get-List" })
-        return(DevChat.Colors.gray .. "Getting the room list from the DevChat index..." .. DevChat.Colors.reset)
+        return(Colors.gray .. "Getting the room list from the DevChat index..." .. Colors.reset)
     end
 
 Join =
@@ -54,12 +46,12 @@ Join =
         local arg = {...}
         local addr = DevChat.findRoom(id) or id
         local nick = arg[1] or ao.id
-        ao.send({ Target = addr, Action = "Register", Nickname = nick })
+        ao.send({ Target = addr, Action = "Register", Nickname = nick or Name })
         return(
-            DevChat.Colors.gray ..
+            Colors.gray ..
              "Registering with room " ..
-            DevChat.Colors.blue .. id .. 
-            DevChat.Colors.gray .. "..." .. DevChat.Colors.reset)
+            Colors.blue .. id .. 
+            Colors.gray .. "..." .. Colors.reset)
     end
 
 Say =
@@ -73,8 +65,8 @@ Say =
         local name = DevChat.Rooms[DevChat.LastSend] or id
         ao.send({ Target = DevChat.LastSend, Action = "Broadcast", Data = text })
         if DevChat.Confirmations then
-            return(DevChat.Colors.gray .. "Broadcasting to " .. DevChat.Colors.blue ..
-                name .. DevChat.Colors.gray .. "..." .. DevChat.Colors.reset)
+            return(Colors.gray .. "Broadcasting to " .. Colors.blue ..
+                name .. Colors.gray .. "..." .. Colors.reset)
         else
             return ""
         end
@@ -93,10 +85,10 @@ Tip =
             Recipient = recipient,
             Quantity = qty
         })
-        return(DevChat.Colors.gray .. "Sent tip of " ..
-            DevChat.Colors.green .. qty .. DevChat.Colors.gray ..
-            " to " .. DevChat.Colors.red .. recipient .. DevChat.Colors.gray ..
-            " in room " .. DevChat.Colors.blue .. roomName .. DevChat.Colors.gray ..
+        return(Colors.gray .. "Sent tip of " ..
+            Colors.green .. qty .. Colors.gray ..
+            " to " .. Colors.red .. recipient .. Colors.gray ..
+            " in room " .. Colors.blue .. roomName .. Colors.gray ..
             "."
         )
     end
@@ -119,11 +111,11 @@ Replay =
             Depth = tostring(depth)
         })
         return(
-            DevChat.Colors.gray ..
+            Colors.gray ..
              "Requested replay of the last " ..
-            DevChat.Colors.green .. depth .. 
-            DevChat.Colors.gray .. " messages from " .. DevChat.Colors.blue ..
-            roomName .. DevChat.Colors.reset .. ".")
+            Colors.green .. depth .. 
+            Colors.gray .. " messages from " .. Colors.blue ..
+            roomName .. Colors.reset .. ".")
     end
 
 Leave =
@@ -131,10 +123,10 @@ Leave =
         local addr = DevChat.findRoom(id) or id
         ao.send({ Target = addr, Action = "Unregister" })
         return(
-            DevChat.Colors.gray ..
+            Colors.gray ..
              "Leaving room " ..
-            DevChat.Colors.blue .. id ..
-            DevChat.Colors.gray .. "..." .. DevChat.Colors.reset)
+            Colors.blue .. id ..
+            Colors.gray .. "..." .. Colors.reset)
     end
 
 
@@ -146,19 +138,19 @@ Handlers.add(
         if m.Broadcaster == ao.id then
             if DevChat.Confirmations == true then
                 print(
-                    DevChat.Colors.gray .. "[Received confirmation of your broadcast in "
-                    .. DevChat.Colors.blue .. shortRoom .. DevChat.Colors.gray .. ".]"
-                    .. DevChat.Colors.reset)
+                    Colors.gray .. "[Received confirmation of your broadcast in "
+                    .. Colors.blue .. shortRoom .. Colors.gray .. ".]"
+                    .. Colors.reset)
             end
         else
             local nick = string.sub(m.Nickname, 1, 10)
             if m.Broadcaster ~= m.Nickname then
-                nick = nick .. DevChat.Colors.gray .. "#" .. string.sub(m.Broadcaster, 1, 3)
+                nick = nick .. Colors.gray .. "#" .. string.sub(m.Broadcaster, 1, 3)
             end
             print(
-                "[" .. DevChat.Colors.red .. nick .. DevChat.Colors.reset
-                .. "@" .. DevChat.Colors.blue .. shortRoom .. DevChat.Colors.reset
-                .. "]> " .. DevChat.Colors.green .. m.Data .. DevChat.Colors.reset)
+                "[" .. Colors.red .. nick .. Colors.reset
+                .. "@" .. Colors.blue .. shortRoom .. Colors.reset
+                .. "]> " .. Colors.green .. m.Data .. Colors.reset)
 
             DevChat.LastReceive.Room = m.From
             DevChat.LastReceive.Sender = m.Broadcaster
@@ -186,7 +178,7 @@ Handlers.add(
             local address = m.TagArray[i].value
 
             if tagPrefix == filterPrefix then
-                rows = rows .. DevChat.Colors.blue .. "        " .. name .. DevChat.Colors.reset .. "\n"
+                rows = rows .. Colors.blue .. "        " .. name .. Colors.reset .. "\n"
                 DevChat.Rooms[address] = name
             end
         end
@@ -201,15 +193,19 @@ if DevChatRegistered == nil then
     Join(DevChat.InitRoom)
 end
 
-return(
-    DevChat.Colors.blue .. "\n\nWelcome to ao DevChat v0.1!\n\n" .. DevChat.Colors.reset ..
-    "DevChat is a simple service that helps the ao community communicate as we build our new computer.\n" ..
-    "The interface is simple. Run...\n\n" ..
-    DevChat.Colors.green .. "\t\t`List()`" .. DevChat.Colors.reset .. " to see which rooms are available.\n" .. 
-    DevChat.Colors.green .. "\t\t`Join(\"RoomName\")`" .. DevChat.Colors.reset .. " to join a room.\n" .. 
-    DevChat.Colors.green .. "\t\t`Say(\"Msg\"[, \"RoomName\"])`" .. DevChat.Colors.reset .. " to post to a room (remembering your last choice for next time).\n" ..
-    DevChat.Colors.green .. "\t\t`Replay([\"Count\"])`" .. DevChat.Colors.reset .. " to reprint the most recent messages from a chat.\n" ..
-    DevChat.Colors.green .. "\t\t`Leave(\"RoomName\")`" .. DevChat.Colors.reset .. " at any time to unsubscribe from a chat.\n" ..
-    DevChat.Colors.green .. "\t\t`Tip([\"Recipient\"])`" .. DevChat.Colors.reset .. " to send a token from the chatroom to the sender of the last message.\n\n" ..
-    "You have already been registered to the " .. DevChat.Colors.blue .. DevChat.Rooms[DevChat.InitRoom] .. DevChat.Colors.reset .. ".\n" ..
-    "Have fun, be respectful, and remember: Cypherpunks ship code! 🫡")
+function help()
+    return(
+        Colors.blue .. "\n\nWelcome to ao DevChat v0.1!\n\n" .. Colors.reset ..
+        "DevChat is a simple service that helps the ao community communicate as we build our new computer.\n" ..
+        "The interface is simple. Run...\n\n" ..
+        Colors.green .. "\t\t`List()`" .. Colors.reset .. " to see which rooms are available.\n" .. 
+        Colors.green .. "\t\t`Join(\"RoomName\")`" .. Colors.reset .. " to join a room.\n" .. 
+        Colors.green .. "\t\t`Say(\"Msg\"[, \"RoomName\"])`" .. Colors.reset .. " to post to a room (remembering your last choice for next time).\n" ..
+        Colors.green .. "\t\t`Replay([\"Count\"])`" .. Colors.reset .. " to reprint the most recent messages from a chat.\n" ..
+        Colors.green .. "\t\t`Leave(\"RoomName\")`" .. Colors.reset .. " at any time to unsubscribe from a chat.\n" ..
+        Colors.green .. "\t\t`Tip([\"Recipient\"])`" .. Colors.reset .. " to send a token from the chatroom to the sender of the last message.\n\n" ..
+        "You have already been registered to the " .. Colors.blue .. DevChat.Rooms[DevChat.InitRoom] .. Colors.reset .. ".\n" ..
+        "Have fun, be respectful, and remember: Cypherpunks ship code! 🫡")
+end
+
+return help()

@@ -2,14 +2,21 @@ Rooms = Rooms or {}
 
 Handlers.add(
     "Register",
-    Handlers.utils.hasMatchingTag("Action", "Register"),
     function(m)
+       return m.Action == "Register" and m.Address == m.From
+    end,
+    function(m)
+        assert(m.Address, 'Address Tag is required!')
+        assert(type(m.Address) == "string", 'Address should be string')
+        assert(#m.Address == 43, 'Address should be 43 characters log')
+        assert(type(m.Name) == "string", 'Name should be string')
+
         print("Adding room '" .. m.Name .. "'. Added by: " .. m.From)
         local address = m.Address or m.From
         table.insert(Rooms, { Address = address, Name = m.Name, AddedBy = m.From })
         ao.send({
             Target = m.From,
-            Action = "Registered"
+            Action = Colors.gray .. "Registered Room " .. Colors.blue .. m.Name .. Colors.reset
         })
     end
 )
@@ -40,7 +47,11 @@ Handlers.add(
         end
 
         if m.From ~= room.AddedBy then
-            print("UNAUTH: Remove attempt by " .. m.From .. " for '" .. m.Name .. "'!")
+            print(Colors.red .. 
+              "UNAUTH: Remove attempt by ".. 
+              Colors.green .. m.From .. " for '" .. 
+              Colors.blue .. m.Name .. "'!" .. Colors.reset
+            )
             return
         end
 
