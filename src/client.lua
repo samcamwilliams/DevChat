@@ -8,8 +8,6 @@ DevChat.Colors = {
     gray = "\27[90m"
 }
 
-DevChat.Bell = "\x07"
-
 DevChat.Router = "xnkv_QpWqICyt8NpVMbfsUQciZ4wlm5DigLrfXRm8fY"
 DevChat.InitRoom = "isImEFj7zii8ALzRirQ2nqUUXecCkdFSh10xB_hbBJ0"
 DevChat.LastSend = DevChat.LastSend or DevChat.InitRoom
@@ -158,7 +156,7 @@ Handlers.add(
                 nick = nick .. DevChat.Colors.gray .. "#" .. string.sub(m.Broadcaster, 1, 3)
             end
             print(
-                DevChat.Bell .. "[" .. DevChat.Colors.red .. nick .. DevChat.Colors.reset
+                "[" .. DevChat.Colors.red .. nick .. DevChat.Colors.reset
                 .. "@" .. DevChat.Colors.blue .. shortRoom .. DevChat.Colors.reset
                 .. "]> " .. DevChat.Colors.green .. m.Data .. DevChat.Colors.reset)
 
