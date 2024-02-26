@@ -192,7 +192,7 @@ Handlers.add(
         end
 
         print(
-            intro .. rows .. "\nJoin a chat by running `Join(\"chatName\"[, \"yourNickname\"])`! You can leave chats with `Leave(\"name\")`.")
+            intro .. rows .. "\nJoin a chat by running `Join(\"chatName\", \"yourNickname\")`! You can leave chats with `Leave(\"name\")`.")
     end
 )
 
@@ -206,9 +206,9 @@ return(
     "DevChat is a simple service that helps the ao community communicate as we build our new computer.\n" ..
     "The interface is simple. Run...\n\n" ..
     DevChat.Colors.green .. "\t\t`List()`" .. DevChat.Colors.reset .. " to see which rooms are available.\n" .. 
-    DevChat.Colors.green .. "\t\t`Join(\"RoomName\")`" .. DevChat.Colors.reset .. " to join a room.\n" .. 
-    DevChat.Colors.green .. "\t\t`Say(\"Msg\"[, \"RoomName\"])`" .. DevChat.Colors.reset .. " to post to a room (remembering your last choice for next time).\n" ..
-    DevChat.Colors.green .. "\t\t`Replay([\"Count\"])`" .. DevChat.Colors.reset .. " to reprint the most recent messages from a chat.\n" ..
+    DevChat.Colors.green .. "\t\t`Join(\"RoomName\", \"yourNickname\")`" .. DevChat.Colors.reset .. " to join a room.\n" .. 
+    DevChat.Colors.green .. "\t\t`Say(\"Msg\", \"RoomName\")`" .. DevChat.Colors.reset .. " to post to a room (remembering your last choice for next time).\n" ..
+    DevChat.Colors.green .. "\t\t`Replay(\"Count\", \"RoomName\")`" .. DevChat.Colors.reset .. " to reprint the most recent messages from a chat.\n" ..
     DevChat.Colors.green .. "\t\t`Leave(\"RoomName\")`" .. DevChat.Colors.reset .. " at any time to unsubscribe from a chat.\n" ..
     DevChat.Colors.green .. "\t\t`Tip([\"Recipient\"])`" .. DevChat.Colors.reset .. " to send a token from the chatroom to the sender of the last message.\n\n" ..
     "You have already been registered to the " .. DevChat.Colors.blue .. DevChat.Rooms[DevChat.InitRoom] .. DevChat.Colors.reset .. ".\n" ..
