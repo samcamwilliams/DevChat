@@ -105,7 +105,7 @@ Replay =
     function(...) -- depth, room
         local arg = {...}
         local room = nil
-        if arg[1] then
+        if arg[2] then
             room = DevChat.findRoom(arg[2]) or arg[2]
         else
             room = DevChat.LastReceive.Room
