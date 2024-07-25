@@ -23,9 +23,10 @@ function Broadcast(from, data, type)
         .. from .. ". Content:\n" .. data)
     local lastUsers = {}
     -- only broadcast to the users of the last 100 messages
-    for i=#Messages - 100, #Messages, 1 do
+    for i=#Messages - 500, #Messages, 1 do
        lastUsers[Messages[i].From] = 1 
     end
+    print("Users: " .. tostring(#Utils.keys(lastUsers)))
     for user,_ in pairs(lastUsers) do
         DispatchMessage(user, from, data, type)
     end
